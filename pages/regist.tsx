@@ -15,7 +15,7 @@ const EditorWithForwardedRef = React.forwardRef((props: any, ref) => (
 interface Props {}
 
 const Regist = (props: Props) => {
-  const markdownRef = useRef(null);
+  const markdownRef = useRef<any>(null);
   const [title, setTitle] = useState<string>("");
   const [markdown, setMarkdown] = useState<string>("");
   const handleEditorChange = () => {
