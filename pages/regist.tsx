@@ -12,6 +12,8 @@ const EditorWithForwardedRef = React.forwardRef((props: any, ref) => (
   <Editor {...props} forwardedRef={ref} />
 ));
 
+EditorWithForwardedRef.displayName = "ForwardRefMarkdownEditor";
+
 interface Props {}
 
 const Regist = (props: Props) => {

@@ -5,7 +5,14 @@ const ForwardWrappedEditor = (props: any) => {
   const { forwardedRef } = props;
 
   // 3. Pass down forwardRef to Editor(the real component that needs)
-  return <Editor {...props} ref={forwardedRef} usageStatistics={false} />;
+  return (
+    <Editor
+      {...props}
+      ref={forwardedRef}
+      height="600px"
+      usageStatistics={false}
+    />
+  );
 };
 
 export default ForwardWrappedEditor;
