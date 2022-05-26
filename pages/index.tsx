@@ -1,6 +1,7 @@
+import axios from "axios";
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
+import Banner from "../components/home/Banner";
 
 const Home: NextPage = () => {
   return (
@@ -10,6 +11,7 @@ const Home: NextPage = () => {
         <meta name="description" content="my personal blog" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Banner />
     </div>
   );
 };
