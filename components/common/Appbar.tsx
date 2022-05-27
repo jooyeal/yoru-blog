@@ -14,7 +14,7 @@ const Appbar = (props: Props) => {
     router.reload();
   };
   return (
-    <div className="fixed z-50 w-screen h-16 flex items-center justify-end pr-6">
+    <div className="fixed z-50 w-screen h-16 flex items-center justify-end pr-6 font-bold">
       <div className="bg-slate-400 bg-opacity-40 p-3 rounded-lg flex items-center gap-5">
         <Link href="/">
           <a>HOME</a>
@@ -22,7 +22,11 @@ const Appbar = (props: Props) => {
         <Link href="/posts">
           <a>POSTS</a>
         </Link>
-        {isAdmin && <button onClick={excLogout}>LOGOUT</button>}
+        {isAdmin && (
+          <button className="font-bold" onClick={excLogout}>
+            LOGOUT
+          </button>
+        )}
       </div>
     </div>
   );

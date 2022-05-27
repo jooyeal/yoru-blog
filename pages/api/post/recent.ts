@@ -21,8 +21,8 @@ export default async function handler(
     const docRef = await db
       .collection(COLLECTION_NAME)
       .orderBy("createdAt", "desc")
+      .limit(5)
       .get();
-
     const responseContent = docRef.docs.map((doc: any) => {
       return { id: doc.id, ...doc.data() };
     });

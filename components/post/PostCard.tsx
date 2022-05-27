@@ -14,7 +14,7 @@ const PostCard: React.FC<Props> = ({ post }) => {
           className="rounded-tr-lg rounded-tl-lg h-40 object-cover"
           src={post.thumbnail}
         />
-        <div className="h-10 p-2 overflow-hidden text-ellipsis ellipsis">
+        <div className="h-10 p-2 overflow-hidden text-ellipsis ellipsis font-sourcecode">
           {post.title}
         </div>
       </div>

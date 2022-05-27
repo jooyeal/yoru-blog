@@ -22,12 +22,21 @@ class Document extends NextDocument<Props> {
           rel="stylesheet"
           href="https://uicdn.toast.com/editor-plugin-color-syntax/latest/toastui-editor-plugin-color-syntax.min.css"
         />
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/themes/prism.min.css"
+        />
+        <link
+          rel="stylesheet"
+          href="https://uicdn.toast.com/editor-plugin-code-syntax-highlight/latest/toastui-editor-plugin-code-syntax-highlight.min.css"
+        />
         <body className="transition-colors duration-700">
           <Main />
           <NextScript />
           <Script src="https://uicdn.toast.com/tui-color-picker/latest/tui-color-picker.min.js"></Script>
           <Script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></Script>
           <Script src="https://uicdn.toast.com/editor-plugin-color-syntax/latest/toastui-editor-plugin-color-syntax.min.js"></Script>
+          <Script src="https://uicdn.toast.com/editor-plugin-code-syntax-highlight/latest/toastui-editor-plugin-code-syntax-highlight-all.min.js"></Script>
         </body>
       </Html>
     );

@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { FormEvent, useState } from "react";
-import { parseCookies, setCookie, destroyCookie } from "nookies";
+import { setCookie, destroyCookie } from "nookies";
 import { useRouter } from "next/router";
 
 interface Props {}

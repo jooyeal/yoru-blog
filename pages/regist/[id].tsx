@@ -7,6 +7,7 @@ import Loading from "../../components/common/Loading";
 import CategoryBar from "../../components/post/CategoryBar";
 import { updatePostApi } from "../../services/postApi";
 import { useAppDispatch, useAppSelector } from "../../store/storeHook";
+import nookies from "nookies";
 
 interface Props {
   post: any;
@@ -111,6 +112,15 @@ const Modify: React.FC<Props> = ({ post, id }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const cookies = nookies.get(ctx);
+  if (!cookies.admin_mode || cookies.admin_mode !== "true") {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/",
+      },
+    };
+  }
   const { data } = await axios.get(
     `${process.env.HOST_URL}/api/post/${ctx.params?.id}`
     // `http://localhost:3000/api/post/${ctx.params?.id}`

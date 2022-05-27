@@ -14,7 +14,7 @@ module.exports = {
       mobile: { max: "500px" },
     },
     fontFamily: {
-      introduction: ['"Source Code Pro"'],
+      sourcecode: ['"Source Code Pro"'],
     },
   },
   plugins: [],

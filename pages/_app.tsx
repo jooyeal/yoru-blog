@@ -4,6 +4,7 @@ import Appbar from "../components/common/Appbar";
 import NextNprogress from "nextjs-progressbar";
 import { Provider } from "react-redux";
 import { store } from "../store";
+import Footer from "../components/common/Footer";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -17,6 +18,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       />
       <Appbar />
       <Component {...pageProps} />
+      <Footer />
     </Provider>
   );
 }

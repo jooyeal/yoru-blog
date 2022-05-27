@@ -7,6 +7,8 @@ import { addPostApi } from "../../services/postApi";
 import { useRouter } from "next/router";
 import Loading from "../../components/common/Loading";
 import CategoryBar from "../../components/post/CategoryBar";
+import { GetServerSideProps } from "next";
+import nookies from "nookies";
 
 const Editor = dynamic(
   () => import("../../components/post/ForwardWrappedEditor"),
@@ -115,6 +117,21 @@ const Regist = (props: Props) => {
       </div>
     </>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const cookies = nookies.get(ctx);
+  if (!cookies.admin_mode || cookies.admin_mode !== "true") {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/",
+      },
+    };
+  }
+  return {
+    props: {},
+  };
 };
 
 export default Regist;
