@@ -28,8 +28,8 @@ const Modify: React.FC<Props> = ({ post, id }) => {
   const dispatch = useAppDispatch();
   const postSelctor = useAppSelector((state) => state.postManager);
   const markdownRef = useRef<any>(null);
-  const [title, setTitle] = useState<string>(post.title);
-  const [markdown, setMarkdown] = useState<string>(post.content);
+  const [title, setTitle] = useState<string>("");
+  const [markdown, setMarkdown] = useState<string>("");
   const [thumbnail, setThumbnail] = useState<File>();
 
   const handleEditorChange = () => {
@@ -94,6 +94,7 @@ const Modify: React.FC<Props> = ({ post, id }) => {
               initialEditType="markdown"
               onChange={handleEditorChange}
               ref={markdownRef}
+              initialValue={markdown}
             />
           </div>
           <div className="p-4 flex justify-end">
@@ -107,17 +108,17 @@ const Modify: React.FC<Props> = ({ post, id }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { data } = await axios.get(
-    `${process.env.HOST_URL}/api/post/${ctx.params?.id}`
-    // `http://localhost:3000/api/post/${ctx.params?.id}`
-  );
-  return {
-    props: {
-      post: data,
-      id: ctx.params?.id,
-    },
-  };
-};
+// export const getServerSideProps: GetServerSideProps = async (ctx) => {
+//   // const { data } = await axios.get(
+//   //   `${process.env.HOST_URL}/api/post/${ctx.params?.id}`
+//   //   // `http://localhost:3000/api/post/${ctx.params?.id}`
+//   // );
+//   // return {
+//   //   props: {
+//   //     post: data,
+//   //     id: ctx.params?.id,
+//   //   },
+//   // };
+// };
 
 export default Modify;
