@@ -100,7 +100,7 @@ const Home: React.FC<Props> = ({ posts }) => {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { data } = await axios.get(
-    `${process.env.HOST_URL}/api/post/recent`
+    `${process.env.HOST_URL}/api/post`
     // `http://localhost:3000/api/post`
   );
   return {
