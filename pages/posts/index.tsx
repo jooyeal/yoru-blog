@@ -2,21 +2,26 @@ import axios from "axios";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PostCard from "../../components/post/PostCard";
+import { parseCookies } from "nookies";
+import useAuth from "../../hooks/useAuth";
 
 interface Props {
   posts?: any;
 }
 
 const Posts: React.FC<Props> = ({ posts }) => {
+  const { isAdmin } = useAuth();
   return (
     <div className="relative">
-      <Link href="/regist">
-        <a className="fixed bottom-6 right-6 bg-slate-400 bg-opacity-40 p-3 rounded-lg z-50">
-          ADD POST
-        </a>
-      </Link>
+      {isAdmin && (
+        <Link href="/regist">
+          <a className="fixed bottom-6 right-6 bg-slate-400 bg-opacity-40 p-3 rounded-lg z-50">
+            ADD POST
+          </a>
+        </Link>
+      )}
       <div>
         <div className="relative w-screen h-screen">
           <Image src="/blog_banner.jpeg" layout="fill" />
@@ -36,7 +41,10 @@ const Posts: React.FC<Props> = ({ posts }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { data } = await axios.get("http://localhost:3000/api/post");
+  const { data } = await axios.get(
+    `${process.env.HOST_URL}/api/post`
+    // "http://localhost:3000/api/post"
+  );
   return {
     props: {
       posts: data,

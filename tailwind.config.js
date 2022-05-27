@@ -5,7 +5,11 @@ module.exports = {
   ],
   darkMode: "class",
   theme: {
-    extend: {},
+    extend: {
+      height: {
+        128: "36rem",
+      },
+    },
     screens: {
       mobile: { max: "500px" },
     },

@@ -20,16 +20,15 @@ export default async function handler(
 
     const docRef = await db
       .collection(COLLECTION_NAME)
-      .where("email", "==", "jyol1234@gmail.com")
+      .where("email", "==", req.body.email)
+      .where("password", "==", req.body.password)
       .get();
     const responseContent = docRef.docs.map((doc: any) => doc.data());
-
-    const data = {
-      email: "jyol1234@gmail.com",
-      password: "123456",
-    };
-    console.log(responseContent);
-    res.status(200).json("success");
+    if (responseContent.length !== 0) {
+      res.status(200).json("login success");
+    } else {
+      res.status(403).json("login failed");
+    }
   } catch (err) {
     res.status(500).json(err);
   }

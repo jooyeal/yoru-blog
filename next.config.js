@@ -2,8 +2,12 @@
 const nextConfig = {
   reactStrictMode: true,
   env: {
-    MONGO_URL:
-      "mongodb+srv://sereyoru:Tjfflalsdk12!@cluster0.kdlus.mongodb.net/?retryWrites=true&w=majority",
+    CLOUDINARY_PRESET: "h3tknacx",
+    CLOUDINARY_NAME: "duzum4r81",
+    HOST_URL: "https://yoru-blog-mrxf47t42-jooyeal.vercel.app",
+  },
+  images: {
+    domains: ["res.cloudinary.com"],
   },
 };
 

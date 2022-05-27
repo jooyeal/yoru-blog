@@ -17,15 +17,8 @@ export default async function handler(
       });
     }
     const db = getFirestore();
-
-    const docRef = db.collection(COLLECTION_NAME).doc();
-    const insertData = {
-      title: req.body.title,
-      thumbnail: req.body.thumbnail,
-      content: req.body.content,
-      createdAt: new Date(),
-    };
-    docRef.set(insertData);
+    const docRef = db.collection(COLLECTION_NAME).doc(req.body.id);
+    docRef.delete();
 
     res.status(200).json("success");
   } catch (err) {

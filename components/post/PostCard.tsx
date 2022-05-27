@@ -9,10 +9,10 @@ interface Props {
 const PostCard: React.FC<Props> = ({ post }) => {
   return (
     <Link href={`/posts/${post.id}`}>
-      <div className="cursor-pointer w-60 border rounded-lg">
+      <div className="cursor-pointer w-60 border rounded-lg shadow-xl">
         <img
-          className="rounded-tr-lg rounded-tl-lg h-40"
-          src="/blog_banner.jpeg"
+          className="rounded-tr-lg rounded-tl-lg h-40 object-cover"
+          src={post.thumbnail}
         />
         <div className="h-10 p-2 overflow-hidden text-ellipsis ellipsis">
           {post.title}

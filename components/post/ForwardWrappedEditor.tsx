@@ -1,5 +1,6 @@
 import React from "react";
 import { Editor } from "@toast-ui/react-editor";
+import codeSyntax from "@toast-ui/editor-plugin-color-syntax";
 
 const ForwardWrappedEditor = (props: any) => {
   const { forwardedRef } = props;
@@ -11,6 +12,7 @@ const ForwardWrappedEditor = (props: any) => {
       ref={forwardedRef}
       height="600px"
       usageStatistics={false}
+      plugins={[codeSyntax]}
     />
   );
 };
