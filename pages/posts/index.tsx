@@ -16,7 +16,7 @@ const Posts: React.FC<Props> = ({ posts }) => {
   return (
     <div>
       <Head>
-        <title>YORU's POSTS</title>
+        <title>YORU POSTS</title>
         <meta name="description" content="please check my posts" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
