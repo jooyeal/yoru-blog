@@ -17,21 +17,19 @@ const Home: React.FC<Props> = ({ posts }) => {
   const [gurumePosts, setGurumePosts] = useState([]);
 
   useEffect(() => {
-    setRecentlyPosts(posts?.filter((post: any, index: number) => index < 5));
+    setRecentlyPosts(posts.filter((post: any, index: number) => index < 5));
     setDailyPosts(
-      posts?.filter((post: any) => post.categories.includes("daily"))
+      posts.filter((post: any) => post.categories.includes("daily"))
     );
     setDevelopmentPosts(
-      posts?.filter((post: any) => post.categories.includes("development"))
+      posts.filter((post: any) => post.categories.includes("development"))
     );
-    setFoodPosts(
-      posts?.filter((post: any) => post.categories.includes("food"))
-    );
+    setFoodPosts(posts.filter((post: any) => post.categories.includes("food")));
     setTravelPosts(
-      posts?.filter((post: any) => post.categories.includes("travel"))
+      posts.filter((post: any) => post.categories.includes("travel"))
     );
     setGurumePosts(
-      posts?.filter((post: any) => post.categories.includes("gurume"))
+      posts.filter((post: any) => post.categories.includes("gurume"))
     );
   }, []);
   return (
