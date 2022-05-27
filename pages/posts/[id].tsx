@@ -41,7 +41,7 @@ const PostDetail: React.FC<Props> = ({ post, id }) => {
       {postSelector.status === "loading" && <Loading />}
       <div className="w-screen h-auto flex flex-col items-center justify-center gap-10 text-6xl break-all mobile:text-3xl">
         <div className="relative w-screen h-128">
-          <Image src={post.thumbnail} layout="fill" objectFit="fill" />
+          <Image src={post.thumbnail} layout="fill" objectFit="contain" />
         </div>
         <div className="p-4">{post.title}</div>
         <div className="flex flex-wrap gap-2 justify-center p-4">
