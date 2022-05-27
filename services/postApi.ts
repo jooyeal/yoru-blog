@@ -17,7 +17,7 @@ export const addPostApi = createAsyncThunk(
     categories: Array<string>;
     router: NextRouter;
   }) => {
-    await axios.post(`${process.env.HOST_URL}/api/post/add`, {
+    await axios.post(`/api/post/add`, {
       title,
       thumbnail,
       categories,
@@ -44,7 +44,7 @@ export const updatePostApi = createAsyncThunk(
     categories: Array<string>;
     router: NextRouter;
   }) => {
-    await axios.post(`${process.env.HOST_URL}/api/post/update`, {
+    await axios.post(`/api/post/update`, {
       id,
       title,
       thumbnail,
@@ -58,7 +58,7 @@ export const updatePostApi = createAsyncThunk(
 export const deletePostApi = createAsyncThunk(
   "posts/fetchDeleteApi",
   async ({ id, router }: { id: string; router: NextRouter }) => {
-    await axios.post(`${process.env.HOST_URL}/api/post/delete`, {
+    await axios.post(`/api/post/delete`, {
       id,
     });
     router.push("/posts");

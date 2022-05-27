@@ -17,11 +17,19 @@ export default async function handler(
       });
     }
     const db = getFirestore();
-
-    const docRef = await db
-      .collection(COLLECTION_NAME)
-      .orderBy("createdAt", "desc")
-      .get();
+    let docRef = null;
+    if (req.query.page) {
+      docRef = await db
+        .collection(COLLECTION_NAME)
+        .orderBy("createdAt", "desc")
+        .limit(parseInt(req.query.page[0]) * 5)
+        .get();
+    } else {
+      docRef = await db
+        .collection(COLLECTION_NAME)
+        .orderBy("createdAt", "desc")
+        .get();
+    }
 
     const responseContent = docRef.docs.map((doc: any) => {
       return { id: doc.id, ...doc.data() };

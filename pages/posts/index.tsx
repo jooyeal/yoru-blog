@@ -2,17 +2,39 @@ import axios from "axios";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PostCard from "../../components/post/PostCard";
 import useAuth from "../../hooks/useAuth";
 import Head from "next/head";
+import InfiniteScroll from "react-infinite-scroller";
 
 interface Props {
   posts?: any;
 }
 
 const Posts: React.FC<Props> = ({ posts }) => {
+  const [currentPosts, setCurrentPosts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
   const { isAdmin } = useAuth();
+
+  useEffect(() => {
+    setCurrentPosts(posts);
+  }, []);
+
+  const getNextPage = async () => {
+    const { data } = await axios.get(
+      `${process.env.HOST_URL}/api/post`,
+      // "http://localhost:3000/api/post",
+      { params: { page: currentPage + 1 } }
+    );
+    setCurrentPage((prev) => prev + 1);
+    setCurrentPosts(data);
+    if (data.length < (currentPage + 1) * 5) {
+      setHasMore(false);
+    }
+  };
+
   return (
     <div>
       <Head>
@@ -36,11 +58,24 @@ const Posts: React.FC<Props> = ({ posts }) => {
               <div className="w-2/3">{`POSTS.`}</div>
             </div>
           </div>
-          <div className="p-6 flex justify-center flex-wrap gap-6">
-            {posts?.map((post: any, index: number) => (
-              <PostCard post={post} key={index} />
-            ))}
-          </div>
+          {/* <div className="overflow-auto h-96"> */}
+          <InfiniteScroll
+            pageStart={0}
+            loadMore={getNextPage}
+            hasMore={hasMore}
+            loader={
+              <div className="loader" key={0}>
+                Loading ...
+              </div>
+            }
+          >
+            <div className="p-6 flex justify-center flex-wrap gap-6">
+              {currentPosts?.map((post: any, index: number) => (
+                <PostCard post={post} key={index} />
+              ))}
+            </div>
+          </InfiniteScroll>
+          {/* </div> */}
         </div>
       </div>
     </div>
@@ -49,8 +84,9 @@ const Posts: React.FC<Props> = ({ posts }) => {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { data } = await axios.get(
-    `${process.env.HOST_URL}/api/post`
-    // "http://localhost:3000/api/post"
+    // `${process.env.HOST_URL}/api/post`
+    "http://localhost:3000/api/post",
+    { params: { page: 1 } }
   );
   return {
     props: {
