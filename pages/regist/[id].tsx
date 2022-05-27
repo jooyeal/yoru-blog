@@ -1,23 +1,11 @@
 import axios from "axios";
 import { GetServerSideProps } from "next";
-import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import React, { ChangeEvent, FormEvent, useRef, useState } from "react";
 import { EditorWithForwardedRef } from ".";
 import Loading from "../../components/common/Loading";
 import { updatePostApi } from "../../services/postApi";
 import { useAppDispatch, useAppSelector } from "../../store/storeHook";
-
-// const Editor = dynamic(
-//   () => import("../../components/post/ForwardWrappedEditor"),
-//   { ssr: false }
-// );
-// // 2. Pass down to child components using forwardRef
-// const EditorWithForwardedRef = React.forwardRef((props: any, ref) => (
-//   <Editor {...props} forwardedRef={ref} />
-// ));
-
-// EditorWithForwardedRef.displayName = "ForwardRefMarkdownEditor";
 
 interface Props {
   post: any;
