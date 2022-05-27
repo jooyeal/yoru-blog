@@ -12,7 +12,7 @@ const Editor = dynamic(
   { ssr: false }
 );
 // 2. Pass down to child components using forwardRef
-const EditorWithForwardedRef = React.forwardRef((props: any, ref) => (
+export const EditorWithForwardedRef = React.forwardRef((props: any, ref) => (
   <Editor {...props} forwardedRef={ref} />
 ));
 

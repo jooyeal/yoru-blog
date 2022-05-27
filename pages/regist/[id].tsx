@@ -3,20 +3,21 @@ import { GetServerSideProps } from "next";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import React, { ChangeEvent, FormEvent, useRef, useState } from "react";
+import { EditorWithForwardedRef } from ".";
 import Loading from "../../components/common/Loading";
 import { updatePostApi } from "../../services/postApi";
 import { useAppDispatch, useAppSelector } from "../../store/storeHook";
 
-const Editor = dynamic(
-  () => import("../../components/post/ForwardWrappedEditor"),
-  { ssr: false }
-);
-// 2. Pass down to child components using forwardRef
-const EditorWithForwardedRef = React.forwardRef((props: any, ref) => (
-  <Editor {...props} forwardedRef={ref} />
-));
+// const Editor = dynamic(
+//   () => import("../../components/post/ForwardWrappedEditor"),
+//   { ssr: false }
+// );
+// // 2. Pass down to child components using forwardRef
+// const EditorWithForwardedRef = React.forwardRef((props: any, ref) => (
+//   <Editor {...props} forwardedRef={ref} />
+// ));
 
-EditorWithForwardedRef.displayName = "ForwardRefMarkdownEditorUpdate";
+// EditorWithForwardedRef.displayName = "ForwardRefMarkdownEditor";
 
 interface Props {
   post: any;
@@ -28,8 +29,8 @@ const Modify: React.FC<Props> = ({ post, id }) => {
   const dispatch = useAppDispatch();
   const postSelctor = useAppSelector((state) => state.postManager);
   const markdownRef = useRef<any>(null);
-  const [title, setTitle] = useState<string>("");
-  const [markdown, setMarkdown] = useState<string>("");
+  const [title, setTitle] = useState<string>(post.title);
+  const [markdown, setMarkdown] = useState<string>(post.content);
   const [thumbnail, setThumbnail] = useState<File>();
 
   const handleEditorChange = () => {
@@ -108,17 +109,17 @@ const Modify: React.FC<Props> = ({ post, id }) => {
   );
 };
 
-// export const getServerSideProps: GetServerSideProps = async (ctx) => {
-//   // const { data } = await axios.get(
-//   //   `${process.env.HOST_URL}/api/post/${ctx.params?.id}`
-//   //   // `http://localhost:3000/api/post/${ctx.params?.id}`
-//   // );
-//   // return {
-//   //   props: {
-//   //     post: data,
-//   //     id: ctx.params?.id,
-//   //   },
-//   // };
-// };
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { data } = await axios.get(
+    `${process.env.HOST_URL}/api/post/${ctx.params?.id}`
+    // `http://localhost:3000/api/post/${ctx.params?.id}`
+  );
+  return {
+    props: {
+      post: data,
+      id: ctx.params?.id,
+    },
+  };
+};
 
 export default Modify;
