@@ -94,7 +94,6 @@ const Modify: React.FC<Props> = ({ post, id }) => {
               initialEditType="markdown"
               onChange={handleEditorChange}
               ref={markdownRef}
-              initialValue={markdown}
             />
           </div>
           <div className="p-4 flex justify-end">
