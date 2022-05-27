@@ -16,7 +16,7 @@ const EditorWithForwardedRef = React.forwardRef((props: any, ref) => (
   <Editor {...props} forwardedRef={ref} />
 ));
 
-EditorWithForwardedRef.displayName = "ForwardRefMarkdownEditor";
+EditorWithForwardedRef.displayName = "ForwardRefMarkdownEditorUpdate";
 
 interface Props {
   post: any;
