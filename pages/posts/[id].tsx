@@ -39,11 +39,21 @@ const PostDetail: React.FC<Props> = ({ post, id }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {postSelector.status === "loading" && <Loading />}
-      <div className="w-screen h-auth flex flex-col items-center justify-center gap-10 text-6xl break-all mobile:text-3xl">
+      <div className="w-screen h-auto flex flex-col items-center justify-center gap-10 text-6xl break-all mobile:text-3xl">
         <div className="relative w-screen h-128">
           <Image src={post.thumbnail} layout="fill" objectFit="fill" />
         </div>
         <div className="p-4">{post.title}</div>
+        <div className="flex flex-wrap gap-2 justify-center p-4">
+          {post.categories?.map((category: string, index: number) => (
+            <div
+              className="text-lg p-2 bg-purple-400 text-white rounded-lg"
+              key={index}
+            >
+              {category}
+            </div>
+          ))}
+        </div>
       </div>
       <div className="p-4">
         <div className="border-2 p-4">

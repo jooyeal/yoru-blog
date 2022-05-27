@@ -22,6 +22,7 @@ export default async function handler(
       title: req.body.title,
       content: req.body.content,
       thumbnail: req.body.thumbnail,
+      categories: req.body.categories,
       updatedAt: new Date(),
     };
     docRef.update(updateData);

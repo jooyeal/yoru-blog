@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import React, { ChangeEvent, FormEvent, useRef, useState } from "react";
 import { EditorWithForwardedRef } from ".";
 import Loading from "../../components/common/Loading";
+import CategoryBar from "../../components/post/CategoryBar";
 import { updatePostApi } from "../../services/postApi";
 import { useAppDispatch, useAppSelector } from "../../store/storeHook";
 
@@ -20,6 +21,7 @@ const Modify: React.FC<Props> = ({ post, id }) => {
   const [title, setTitle] = useState<string>(post.title);
   const [markdown, setMarkdown] = useState<string>(post.content);
   const [thumbnail, setThumbnail] = useState<File>();
+  const [selected, setSelected] = useState<Array<string>>(post.categories);
 
   const handleEditorChange = () => {
     if (markdownRef) {
@@ -48,7 +50,14 @@ const Modify: React.FC<Props> = ({ post, id }) => {
       url = data.url;
     }
     dispatch(
-      updatePostApi({ id, title, thumbnail: url, content: markdown, router })
+      updatePostApi({
+        id,
+        title,
+        thumbnail: url,
+        content: markdown,
+        categories: selected,
+        router,
+      })
     );
   };
   return (
@@ -67,6 +76,10 @@ const Modify: React.FC<Props> = ({ post, id }) => {
               maxLength={50}
               required
             />
+          </div>
+          <div className="p-4">
+            <p className="text-xl">CATEGORIES</p>
+            <CategoryBar selected={selected} setSelected={setSelected} />
           </div>
           <div className="p-4">
             <p className="text-xl">THUMBNAIL</p>

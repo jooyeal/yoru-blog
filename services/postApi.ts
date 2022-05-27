@@ -8,16 +8,19 @@ export const addPostApi = createAsyncThunk(
     title,
     thumbnail,
     content,
+    categories,
     router,
   }: {
     title: string;
     thumbnail: string;
     content: string;
+    categories: Array<string>;
     router: NextRouter;
   }) => {
     await axios.post("/api/post/add", {
       title,
       thumbnail,
+      categories,
       content,
     });
     router.push("/posts");
@@ -31,18 +34,21 @@ export const updatePostApi = createAsyncThunk(
     title,
     thumbnail,
     content,
+    categories,
     router,
   }: {
     id: string;
     title: string;
     thumbnail: string;
     content: string;
+    categories: Array<string>;
     router: NextRouter;
   }) => {
     await axios.post(`/api/post/update`, {
       id,
       title,
       thumbnail,
+      categories,
       content,
     });
     router.push("/posts");

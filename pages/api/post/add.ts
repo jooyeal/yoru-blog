@@ -23,6 +23,7 @@ export default async function handler(
       title: req.body.title,
       thumbnail: req.body.thumbnail,
       content: req.body.content,
+      categories: req.body.categories,
       createdAt: new Date(),
     };
     docRef.set(insertData);
