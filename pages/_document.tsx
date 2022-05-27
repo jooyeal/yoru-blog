@@ -1,4 +1,5 @@
 import NextDocument, { Html, Head, Main, NextScript } from "next/document";
+import Script from "next/script";
 
 type Props = {};
 
@@ -24,9 +25,9 @@ class Document extends NextDocument<Props> {
         <body className="transition-colors duration-700">
           <Main />
           <NextScript />
-          <script src="https://uicdn.toast.com/tui-color-picker/latest/tui-color-picker.min.js"></script>
-          <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
-          <script src="https://uicdn.toast.com/editor-plugin-color-syntax/latest/toastui-editor-plugin-color-syntax.min.js"></script>
+          <Script src="https://uicdn.toast.com/tui-color-picker/latest/tui-color-picker.min.js"></Script>
+          <Script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></Script>
+          <Script src="https://uicdn.toast.com/editor-plugin-color-syntax/latest/toastui-editor-plugin-color-syntax.min.js"></Script>
         </body>
       </Html>
     );
