@@ -49,7 +49,6 @@ const Modify: React.FC<Props> = ({ post, id }) => {
         formData
       );
       url = data.url;
-      console.log(url);
     }
     dispatch(
       updatePostApi({
