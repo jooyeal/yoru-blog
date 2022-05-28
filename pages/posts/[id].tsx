@@ -14,9 +14,16 @@ import Loading from "../../components/common/Loading";
 import useAuth from "../../hooks/useAuth";
 
 const Viewer = dynamic<EditorProps>(
-  () => import("@toast-ui/react-editor").then((m) => m.Viewer),
+  () =>
+    import("../../components/post/ForwardWrappedViewer").then((m) => m.default),
   { ssr: false }
 );
+
+export const ViewerWithForwardedRef = React.forwardRef((props: any, ref) => (
+  <Viewer {...props} forwardedRef={ref} />
+));
+
+ViewerWithForwardedRef.displayName = "ForwardRefMarkdownViewer";
 
 interface Props {
   post: any;
@@ -43,7 +50,7 @@ const PostDetail: React.FC<Props> = ({ post, id }) => {
         <div className="relative w-screen h-128">
           <Image src={post.thumbnail} layout="fill" objectFit="contain" />
         </div>
-        <div className="p-4">{post.title}</div>
+        <div className="p-2 font-bold">{post.title}</div>
         <div className="flex flex-wrap gap-2 justify-center p-4">
           {post.categories?.map((category: string, index: number) => (
             <div
@@ -57,7 +64,7 @@ const PostDetail: React.FC<Props> = ({ post, id }) => {
       </div>
       <div className="p-4">
         <div className="border-2 p-4">
-          <Viewer initialValue={post.content} />
+          <ViewerWithForwardedRef initialValue={post.content} />
         </div>
       </div>
       {isAdmin && (
