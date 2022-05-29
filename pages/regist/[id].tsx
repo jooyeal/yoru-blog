@@ -54,7 +54,7 @@ const Modify: React.FC<Props> = ({ post, id }) => {
       updatePostApi({
         id,
         title,
-        thumbnail: url,
+        thumbnail: post.thumbnail ?? url,
         content: markdown,
         categories: selected,
         router,
