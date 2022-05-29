@@ -54,13 +54,27 @@ const Modify: React.FC<Props> = ({ post, id }) => {
       updatePostApi({
         id,
         title,
-        thumbnail: post.thumbnail === url ? post.thumbnail : url,
+        thumbnail: thumbnail ? url : post.thumbnail,
         content: markdown,
         categories: selected,
         router,
       })
     );
   };
+
+  const addImage = async (file: File) => {
+    if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", process.env.CLOUDINARY_PRESET || "");
+      const { data } = await axios.post(
+        `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_NAME}/image/upload`,
+        formData
+      );
+      return data.url;
+    }
+  };
+
   return (
     <>
       {postSelctor.status === "loading" && <Loading />}
@@ -98,6 +112,13 @@ const Modify: React.FC<Props> = ({ post, id }) => {
               onChange={handleEditorChange}
               ref={markdownRef}
               initialValue={markdown}
+              hooks={{
+                addImageBlobHook: async (fileOrBlob: any, callback: any) => {
+                  const uploadedImgURL = await addImage(fileOrBlob);
+                  callback(uploadedImgURL, "alt text");
+                  return false;
+                },
+              }}
             />
           </div>
           <div className="p-4 flex justify-end">
