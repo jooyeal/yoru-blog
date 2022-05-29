@@ -14,7 +14,7 @@ const Editor = dynamic(
   () => import("../../components/post/ForwardWrappedEditor"),
   { ssr: false }
 );
-// 2. Pass down to child components using forwardRef
+
 export const EditorWithForwardedRef = React.forwardRef((props: any, ref) => (
   <Editor {...props} forwardedRef={ref} />
 ));
@@ -59,6 +59,7 @@ const Regist = (props: Props) => {
       );
       url = data.url;
     }
+
     dispatch(
       addPostApi({
         title,
@@ -68,6 +69,19 @@ const Regist = (props: Props) => {
         router,
       })
     );
+  };
+
+  const addImage = async (file: File) => {
+    if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", process.env.CLOUDINARY_PRESET || "");
+      const { data } = await axios.post(
+        `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_NAME}/image/upload`,
+        formData
+      );
+      return data.url;
+    }
   };
 
   return (
@@ -106,6 +120,13 @@ const Regist = (props: Props) => {
               initialEditType="markdown"
               onChange={handleEditorChange}
               ref={markdownRef}
+              hooks={{
+                addImageBlobHook: async (fileOrBlob: any, callback: any) => {
+                  const uploadedImgURL = await addImage(fileOrBlob);
+                  callback(uploadedImgURL, "alt text");
+                  return false;
+                },
+              }}
             />
           </div>
           <div className="p-4 flex justify-end">
