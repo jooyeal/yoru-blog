@@ -17,17 +17,27 @@ export default async function handler(
       });
     }
     const db = getFirestore();
-    let docRef = null;
 
-    docRef = await db
+    const docRef = await db
       .collection(COLLECTION_NAME)
       .orderBy("createdAt", "desc")
       .get();
-
-    const responseContent = docRef.docs.map((doc: any) => {
+    const searchContent = docRef.docs.filter((doc: any) => {
+      let category = doc.data().categories.includes(req.body.searchCategory);
+      let value =
+        doc.data().content.includes(req.body.searchValue) ||
+        doc.data().title.includes(req.body.searchValue);
+      if (req.body.searchCategory === "") {
+        category = true;
+      }
+      if (req.body.searchValue === "") {
+        value = true;
+      }
+      return category && value;
+    });
+    const responseContent = searchContent.map((doc: any) => {
       return { id: doc.id, ...doc.data() };
     });
-
     res.status(200).json(responseContent);
   } catch (err) {
     res.status(500).json(err);

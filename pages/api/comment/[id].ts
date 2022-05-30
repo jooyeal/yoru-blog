@@ -9,7 +9,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    const COLLECTION_NAME = "posts";
+    const COLLECTION_NAME = "comments";
     //　初期化する
     if (admin.apps.length === 0) {
       admin.initializeApp({
@@ -21,12 +21,14 @@ export default async function handler(
 
     docRef = await db
       .collection(COLLECTION_NAME)
-      .orderBy("createdAt", "desc")
+      .where("postId", "==", req.query.id)
       .get();
 
-    const responseContent = docRef.docs.map((doc: any) => {
-      return { id: doc.id, ...doc.data() };
-    });
+    const responseContent = docRef.docs
+      .map((doc: any) => {
+        return { id: doc.id, ...doc.data() };
+      })
+      .sort((a: any, b: any) => b.createdAt._seconds - a.createdAt._seconds);
 
     res.status(200).json(responseContent);
   } catch (err) {

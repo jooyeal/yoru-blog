@@ -9,7 +9,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    const COLLECTION_NAME = "posts";
+    const COLLECTION_NAME = "comments";
     //　初期化する
     if (admin.apps.length === 0) {
       admin.initializeApp({
@@ -17,18 +17,18 @@ export default async function handler(
       });
     }
     const db = getFirestore();
-    let docRef = null;
 
-    docRef = await db
-      .collection(COLLECTION_NAME)
-      .orderBy("createdAt", "desc")
-      .get();
+    const docRef = db.collection(COLLECTION_NAME).doc();
+    const insertData = {
+      postId: req.body.postId,
+      username: req.body.username,
+      password: req.body.password,
+      comment: req.body.comment,
+      createdAt: new Date(),
+    };
+    docRef.set(insertData);
 
-    const responseContent = docRef.docs.map((doc: any) => {
-      return { id: doc.id, ...doc.data() };
-    });
-
-    res.status(200).json(responseContent);
+    res.status(200).json("success");
   } catch (err) {
     res.status(500).json(err);
   }

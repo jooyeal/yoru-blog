@@ -9,7 +9,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    const COLLECTION_NAME = "posts";
+    const COLLECTION_NAME = "comments";
     //　初期化する
     if (admin.apps.length === 0) {
       admin.initializeApp({
@@ -17,18 +17,15 @@ export default async function handler(
       });
     }
     const db = getFirestore();
-    let docRef = null;
+    const docRef = db.collection(COLLECTION_NAME).doc(req.body.postId);
+    const getData = await docRef.get();
+    if (getData.data().password === req.body.password) {
+      docRef.delete();
+    } else {
+      return res.status(403).json("PASSWORD IS NOT MATCHED");
+    }
 
-    docRef = await db
-      .collection(COLLECTION_NAME)
-      .orderBy("createdAt", "desc")
-      .get();
-
-    const responseContent = docRef.docs.map((doc: any) => {
-      return { id: doc.id, ...doc.data() };
-    });
-
-    res.status(200).json(responseContent);
+    res.status(200).json("success");
   } catch (err) {
     res.status(500).json(err);
   }

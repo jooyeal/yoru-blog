@@ -64,3 +64,21 @@ export const deletePostApi = createAsyncThunk(
     router.push("/posts");
   }
 );
+
+export const searchPostApi = async (
+  searchValue: string,
+  searchCategory: string
+) => {
+  try {
+    const { data } = await axios.post(
+      `${process.env.HOST_URL}/api/post/search`,
+      {
+        searchValue,
+        searchCategory,
+      }
+    );
+    return data;
+  } catch (err) {
+    return err;
+  }
+};
