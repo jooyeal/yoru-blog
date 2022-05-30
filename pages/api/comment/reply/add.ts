@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 const { cert } = require("firebase-admin/app");
 const { getFirestore } = require("firebase-admin/firestore");
-const serviceAccount = require("../../../yoru-blog-firebase-sdk.json"); // 秘密鍵を取得
+const serviceAccount = require("../../../../yoru-blog-firebase-sdk.json"); // 秘密鍵を取得
 const admin = require("firebase-admin");
 
 export default async function handler(
@@ -9,7 +9,8 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    const COLLECTION_NAME = "comments";
+    const COMMENTS_COLLECTION = "comments";
+    const REPLIES_COLLECTION = "replies";
     //　初期化する
     if (admin.apps.length === 0) {
       admin.initializeApp({
@@ -17,17 +18,25 @@ export default async function handler(
       });
     }
     const db = getFirestore();
-
-    const docRef = db.collection(COLLECTION_NAME).doc();
+    const repliesDoc = db.collection(REPLIES_COLLECTION);
     const insertData = {
-      postId: req.body.postId,
       username: req.body.username,
       password: req.body.password,
       comment: req.body.comment,
-      replies: [],
       createdAt: new Date(),
     };
-    docRef.set(insertData);
+    const replyData = await repliesDoc.add(insertData);
+
+    const commentsDocRef = db
+      .collection(COMMENTS_COLLECTION)
+      .doc(req.body.commentId);
+    const getData = await commentsDocRef.get();
+    const updateData = {
+      replies: [...getData.data().replies, replyData.id],
+      updatedAt: new Date(),
+    };
+
+    commentsDocRef.update(updateData);
 
     res.status(200).json("success");
   } catch (err) {

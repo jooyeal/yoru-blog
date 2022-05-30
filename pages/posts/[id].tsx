@@ -15,6 +15,7 @@ import useAuth from "../../hooks/useAuth";
 import { useMutation } from "react-query";
 import { addCommentApi } from "../../services/commentApi";
 import Comment from "../../components/post/Comment";
+import CommentForm from "../../components/post/CommentForm";
 
 const Viewer = dynamic<EditorProps>(
   () =>
@@ -43,6 +44,7 @@ const PostDetail: React.FC<Props> = ({ post, id, comments }) => {
   const [comment, setComment] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isNewComment, setIsNewComment] = useState<boolean>(false);
 
   const mutation = useMutation(
     () => addCommentApi(id, username, password, comment),
@@ -97,9 +99,33 @@ const PostDetail: React.FC<Props> = ({ post, id, comments }) => {
           <ViewerWithForwardedRef initialValue={post.content} />
         </div>
       </div>
+      {isAdmin && (
+        <div className="p-4 flex justify-end gap-2">
+          <Link href={`/regist/${id}`}>
+            <a className="border-2 p-2 rounded-md">MODIFY</a>
+          </Link>
+          <button className="border-2 p-2 rounded-md" onClick={postDelete}>
+            DELETE
+          </button>
+        </div>
+      )}
       <div className="p-4">
         <div className="border-2 p-4">
-          <div className="font-bold text-xl mb-2">COMMENTS</div>
+          <div className="flex items-center justify-between">
+            <div className="font-bold text-xl mb-2">COMMENTS</div>
+            <div>
+              {!isNewComment && (
+                <div className="flex justify-end">
+                  <button
+                    className="mt-2 border rounded-md p-2"
+                    onClick={() => setIsNewComment(true)}
+                  >
+                    NEW COMMENT
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
           <div className="flex flex-col gap-2">
             {comments.length === 0 && (
               <div className="flex justify-center h-20 items-center text-xl font-bold">
@@ -114,51 +140,16 @@ const PostDetail: React.FC<Props> = ({ post, id, comments }) => {
               />
             ))}
           </div>
-          <div className="border-t-2 flex items-center p-1">
-            <form className="flex flex-col w-full" onSubmit={addComment}>
-              <div>
-                <div className="font-bold text-lg">NAME</div>
-                <input
-                  className="border rounded-md mr-2 outline-none p-2 w-full"
-                  type="text"
-                  maxLength={20}
-                  required
-                  onChange={(e) => setUsername(e.target.value)}
-                />
-                <div className="font-bold text-lg">PASSWORD</div>
-                <input
-                  className="border rounded-md mr-2 outline-none p-2 w-full"
-                  type="password"
-                  maxLength={20}
-                  required
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-              <div>
-                <div className="font-bold text-lg">COMMENT</div>
-                <textarea
-                  className="border rounded-md outline-none p-2 w-full resize-none"
-                  rows={3}
-                  required
-                  onChange={(e) => setComment(e.target.value)}
-                />
-              </div>
-              <button className="p-2 border rounded-md">ADD</button>
-            </form>
-          </div>
+          {isNewComment && (
+            <CommentForm
+              id={id}
+              fetch={addCommentApi}
+              setCancel={setIsNewComment}
+              setIsLoading={setIsLoading}
+            />
+          )}
         </div>
-        <div></div>
       </div>
-      {isAdmin && (
-        <div className="p-4 flex justify-end gap-2">
-          <Link href={`/regist/${id}`}>
-            <a className="border-2 p-2 rounded-md">MODIFY</a>
-          </Link>
-          <button className="border-2 p-2 rounded-md" onClick={postDelete}>
-            DELETE
-          </button>
-        </div>
-      )}
     </div>
   );
 };
