@@ -112,16 +112,16 @@ export const deleteReplyApi = async (
 
 export const updateReplyApi = async (
   replyId: string,
-  password: string,
-  comment: string
+  comment: string,
+  password: string
 ) => {
   try {
     const { data } = await axios.post(
       `${process.env.HOST_URL}/api/comment/reply/update`,
       {
         replyId,
-        password,
         comment,
+        password,
       }
     );
     return data;

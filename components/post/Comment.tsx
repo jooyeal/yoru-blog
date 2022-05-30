@@ -1,18 +1,12 @@
-import { useRouter } from "next/router";
-import React, { Dispatch, FormEvent, SetStateAction, useState } from "react";
-import {
-  BsPencilFill,
-  BsReply,
-  BsReplyFill,
-  BsTrashFill,
-} from "react-icons/bs";
-import { useMutation } from "react-query";
+import React, { Dispatch, SetStateAction, useState } from "react";
+import { BsPencilFill, BsReplyFill, BsTrashFill } from "react-icons/bs";
 import {
   deleteCommentApi,
   replyCommentApi,
   updateCommentApi,
 } from "../../services/commentApi";
 import CommentForm from "./CommentForm";
+import CommentModifyForm from "./CommentModifyForm";
 import Reply from "./Reply";
 
 interface Props {
@@ -21,55 +15,9 @@ interface Props {
 }
 
 const Comment: React.FC<Props> = ({ comment, setIsLoading }) => {
-  const router = useRouter();
   const [isModify, setIsModify] = useState<boolean>(false);
   const [isDelete, setIsDelete] = useState<boolean>(false);
   const [isReply, setIsReply] = useState<boolean>(false);
-  const [password, setPassword] = useState<string>("");
-  const [newComment, setNewComment] = useState<string>("");
-  const [error, setError] = useState<string>("");
-  const updateMutation = useMutation(
-    () => updateCommentApi(comment.id, newComment, password),
-    {
-      onMutate: () => {
-        setIsLoading(true);
-      },
-      onSuccess: (data) => {
-        if (data.statusCode) {
-          data.statusCode === 403 && setError(data.errorMessage);
-        } else {
-          router.reload();
-        }
-        setIsLoading(false);
-      },
-    }
-  );
-
-  const deleteMutation = useMutation(
-    () => deleteCommentApi(comment.id, password),
-    {
-      onMutate: () => {
-        setIsLoading(true);
-      },
-      onSuccess: (data) => {
-        if (data.statusCode) {
-          data.statusCode === 403 && setError(data.errorMessage);
-        } else {
-          router.reload();
-        }
-        setIsLoading(false);
-      },
-    }
-  );
-
-  const excModify = (e: FormEvent) => {
-    e.preventDefault();
-    if (isModify) {
-      updateMutation.mutate();
-    } else if (isDelete) {
-      deleteMutation.mutate();
-    }
-  };
 
   return (
     <>
@@ -113,47 +61,18 @@ const Comment: React.FC<Props> = ({ comment, setIsLoading }) => {
           </span>
         </div>
         {isModify || isDelete ? (
-          <div className="p-2 font-sourcecode">
-            <form onSubmit={excModify}>
-              <div className="flex justify-between">
-                <div className="font-bold text-lg">PASSWORD</div>
-                <div className="text-red-500">{error}</div>
-              </div>
-              <input
-                className="border rounded-md mr-2 outline-none p-2 w-full"
-                type="password"
-                maxLength={20}
-                required
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              {isModify && (
-                <>
-                  <div className="font-bold text-lg">COMMENT</div>
-                  <textarea
-                    className="border rounded-md outline-none p-2 w-full resize-none"
-                    rows={3}
-                    required
-                    onChange={(e) => setNewComment(e.target.value)}
-                  />
-                </>
-              )}
-              <div className="flex justify-end gap-1 mt-1">
-                <button type="submit" className="border rounded-md p-2">
-                  {isDelete && `DELETE`}
-                  {isModify && `MODIFY`}
-                </button>
-                <button
-                  className="border rounded-md p-2"
-                  onClick={() => {
-                    setIsModify(false);
-                    setIsDelete(false);
-                  }}
-                >
-                  CANCEL
-                </button>
-              </div>
-            </form>
-          </div>
+          <CommentModifyForm
+            id={comment.id}
+            updateFetch={updateCommentApi}
+            deleteFetch={deleteCommentApi}
+            isModify={isModify}
+            isDelete={isDelete}
+            setCancel={() => {
+              setIsModify(false);
+              setIsDelete(false);
+            }}
+            setIsLoading={setIsLoading}
+          />
         ) : (
           <>
             <div className="p-2 font-sourcecode border-2 mt-1 rounded-md">
