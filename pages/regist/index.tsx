@@ -1,14 +1,19 @@
 import dynamic from "next/dynamic";
-import React, { ChangeEvent, FormEvent, useRef, useState } from "react";
+import React, {
+  ChangeEvent,
+  FormEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import axios from "axios";
-import { useAppDispatch, useAppSelector } from "../../store/storeHook";
-import { addPostApi } from "../../services/postApi";
 import { useRouter } from "next/router";
 import Loading from "../../components/common/Loading";
 import CategoryBar from "../../components/post/CategoryBar";
 import { GetServerSideProps } from "next";
 import nookies from "nookies";
+import { useAddPostMutation } from "../../services/postQuery";
 
 const Editor = dynamic(
   () => import("../../components/post/ForwardWrappedEditor"),
@@ -24,14 +29,13 @@ EditorWithForwardedRef.displayName = "ForwardRefMarkdownEditor";
 interface Props {}
 
 const Regist = (props: Props) => {
-  const dispatch = useAppDispatch();
-  const postSelctor = useAppSelector((state) => state.postManager);
   const router = useRouter();
   const markdownRef = useRef<any>(null);
   const [title, setTitle] = useState<string>("");
   const [markdown, setMarkdown] = useState<string>("");
   const [thumbnail, setThumbnail] = useState<File>();
   const [selected, setSelected] = useState<Array<string>>([]);
+  const [addPostQuery, addPostResult] = useAddPostMutation();
 
   const handleEditorChange = () => {
     if (markdownRef) {
@@ -60,15 +64,12 @@ const Regist = (props: Props) => {
       url = data.url;
     }
 
-    dispatch(
-      addPostApi({
-        title,
-        thumbnail: url,
-        content: markdown,
-        categories: selected,
-        router,
-      })
-    );
+    addPostQuery({
+      title,
+      thumbnail: url,
+      content: markdown,
+      categories: selected,
+    });
   };
 
   const addImage = async (file: File) => {
@@ -84,9 +85,13 @@ const Regist = (props: Props) => {
     }
   };
 
+  useEffect(() => {
+    addPostResult.isSuccess && router.push("/posts");
+  }, [addPostResult.isSuccess]);
+
   return (
     <>
-      {postSelctor.status === "loading" && <Loading />}
+      {addPostResult.isLoading && <Loading />}
       <div className="p-6">
         <div className="text-3xl font-bold">POST REGIST PAGE</div>
         <form onSubmit={addPost}>
